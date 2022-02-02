@@ -1,33 +1,33 @@
-/*количество исполнителей в каждом жанре*/
+/*РєРѕР»РёС‡РµСЃС‚РІРѕ РёСЃРїРѕР»РЅРёС‚РµР»РµР№ РІ РєР°Р¶РґРѕРј Р¶Р°РЅСЂРµ*/
 select COUNT(s.name) singers_qty, g.title genre from singers s
 join singersgenres sg on s.id = sg.singers_id 
 join genres g on sg.genres_id = g.id
 group by g.title;
 
-/*количество треков, вошедших в альбомы 2019-2020 годов*/
+/*РєРѕР»РёС‡РµСЃС‚РІРѕ С‚СЂРµРєРѕРІ, РІРѕС€РµРґС€РёС… РІ Р°Р»СЊР±РѕРјС‹ 2019-2020 РіРѕРґРѕРІ*/
 select COUNT(t.title) track_qty from tracks t
 join albums a on t.albums_id = a.id
 where a.recording_year between '2019' and '2020';
 
-/*количество треков, вошедших в альбомы 1982-1989 годов*/
+/*РєРѕР»РёС‡РµСЃС‚РІРѕ С‚СЂРµРєРѕРІ, РІРѕС€РµРґС€РёС… РІ Р°Р»СЊР±РѕРјС‹ 1982-1989 РіРѕРґРѕРІ*/
 select COUNT(t.title) track_qty from tracks t
 join albums a on t.albums_id = a.id
 where a.recording_year between '1982' and '1989';
 
 
-/*средняя продолжительность треков по каждому альбому*/
+/*СЃСЂРµРґРЅСЏСЏ РїСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ С‚СЂРµРєРѕРІ РїРѕ РєР°Р¶РґРѕРјСѓ Р°Р»СЊР±РѕРјСѓ*/
 select avg(t.duration) avr_duration, a.title album_name  from tracks t
 join albums a on t.albums_id = a.id
 group by a.id;
 
 
-/*все исполнители, которые не выпустили альбомы в 2021 году*/
+/*РІСЃРµ РёСЃРїРѕР»РЅРёС‚РµР»Рё, РєРѕС‚РѕСЂС‹Рµ РЅРµ РІС‹РїСѓСЃС‚РёР»Рё Р°Р»СЊР±РѕРјС‹ РІ 2021 РіРѕРґСѓ*/
 select distinct s.name singer from singers s
 join singersalbums sa on s.id = sa.singers_id 
 join albums a on sa.albums_id = a.id
 where a.recording_year != '2021';
 
-/*названия сборников, в которых присутствует конкретный исполнитель*/
+/*РЅР°Р·РІР°РЅРёСЏ СЃР±РѕСЂРЅРёРєРѕРІ, РІ РєРѕС‚РѕСЂС‹С… РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РєРѕРЅРєСЂРµС‚РЅС‹Р№ РёСЃРїРѕР»РЅРёС‚РµР»СЊ*/
 select c.title collection from collections c 
 join collectionstracks ct on c.id = ct.collections_id 
 join tracks t on ct.tracks_id  = t.id 
@@ -38,7 +38,7 @@ where s.name = 'Frank Sinatra'
 group by c.id
 order by c.id;
 
-/*название альбомов, в которых присутствуют исполнители более 1 жанра*/
+/*РЅР°Р·РІР°РЅРёРµ Р°Р»СЊР±РѕРјРѕРІ, РІ РєРѕС‚РѕСЂС‹С… РїСЂРёСЃСѓС‚СЃС‚РІСѓСЋС‚ РёСЃРїРѕР»РЅРёС‚РµР»Рё Р±РѕР»РµРµ 1 Р¶Р°РЅСЂР°*/
 select a.title album from albums a 
 join singersalbums sa on a.id = sa.albums_id 
 join singers s on sa.singers_id = s.id
@@ -47,12 +47,12 @@ join genres g on sg.genres_id = g.id
 group by a.id
 having count(g.title) > 1;
 
-/*наименование треков, которые не входят в сборники*/
+/*РЅР°РёРјРµРЅРѕРІР°РЅРёРµ С‚СЂРµРєРѕРІ, РєРѕС‚РѕСЂС‹Рµ РЅРµ РІС…РѕРґСЏС‚ РІ СЃР±РѕСЂРЅРёРєРё*/
 select t.title track from tracks t
 left join collectionstracks ct on t.id = ct.tracks_id
 where ct.collections_id is null;
 
-/*исполнителя(-ей), написавшего самый короткий по продолжительности трек*/
+/*РёСЃРїРѕР»РЅРёС‚РµР»СЏ(-РµР№), РЅР°РїРёСЃР°РІС€РµРіРѕ СЃР°РјС‹Р№ РєРѕСЂРѕС‚РєРёР№ РїРѕ РїСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚Рё С‚СЂРµРє*/
 select s.name singer from singers s
 join singersalbums sa on s.id = sa.singers_id 
 join albums a on sa.albums_id = a.id
@@ -61,7 +61,7 @@ where t.duration = (
 select min(t.duration) from tracks t);
 
 
-/*название альбомов, содержащих НАИМЕНЬШЕЕ количество треков*/
+/*РЅР°Р·РІР°РЅРёРµ Р°Р»СЊР±РѕРјРѕРІ, СЃРѕРґРµСЂР¶Р°С‰РёС… РќРђРРњР•РќР¬РЁР•Р• РєРѕР»РёС‡РµСЃС‚РІРѕ С‚СЂРµРєРѕРІ*/
 select a.title album from tracks t
 join albums a on t.albums_id = a.id 
 group by a.id 
@@ -72,7 +72,7 @@ order by cc
 limit 1
 );
 
-/*название альбомов, содержащих НАИБОЛЬШЕЕ количество треков*/
+/*РЅР°Р·РІР°РЅРёРµ Р°Р»СЊР±РѕРјРѕРІ, СЃРѕРґРµСЂР¶Р°С‰РёС… РќРђРР‘РћР›Р¬РЁР•Р• РєРѕР»РёС‡РµСЃС‚РІРѕ С‚СЂРµРєРѕРІ*/
 select a.title album from tracks t
 join albums a on t.albums_id = a.id 
 group by a.id 
